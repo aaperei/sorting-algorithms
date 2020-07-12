@@ -51,9 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-*/.cproject
+/.cproject
 /.metadata/
-*/.project
-*/.settings
+/.project
+/.settings
 
 /Debug/
