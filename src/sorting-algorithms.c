@@ -693,10 +693,10 @@ int main() {
 	fprintf(outputFile, "\nMethod	N	Initial_Condition	C(n)	M(n)	CPU Cycles Used\n");
 	fflush(outputFile);
 
-	runAll(RANDOM);
-	runAll(SORTED);
+	//runAll(RANDOM);
+	//runAll(SORTED);
 	runAll(REVERSED_SORTED);
-	runAll(NINETY_PERCENT_SORTED);
+	//runAll(NINETY_PERCENT_SORTED);
 
 	fclose(outputFile);
 
