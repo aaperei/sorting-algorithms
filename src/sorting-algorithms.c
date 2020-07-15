@@ -131,27 +131,32 @@ void initializeItemsWithDescendingValues() {
 
 	j=0;
 	for (i = 99; i >= 0; i--) {
-		items100Reference[i].key = i;
+		items100Reference[i].key = j;
+		j++;
 	}
 
 	j=0;
 	for (i = 999; i >= 0; i--) {
-		items1000Reference[i].key = i;
+		items1000Reference[i].key = j;
+		j++;
 	}
 
 	j=0;
 	for (i = 9999; i >= 0; i--) {
-		items10000Reference[i].key = i;
+		items10000Reference[i].key = j;
+		j++;
 	}
 
 	j=0;
 	for (i = 99999; i >= 0; i--) {
-		items100000Reference[i].key = i;
+		items100000Reference[i].key = j;
+		j++;
 	}
 
 	j=0;
 	for (i = 999999; i >= 0; i--) {
-		items1000000Reference[i].key = i;
+		items1000000Reference[i].key = j;
+		j++;
 	}
 }
 
