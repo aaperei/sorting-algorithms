@@ -19,6 +19,7 @@ typedef struct TItem {
 //Add here any other attributes as needed
 } TItem;
 
+char *STOOGE_SORT = "Stooge Sort";
 char *SHELL_SORT = "Shell Sort";
 char *INSERTION_SORT = "Insertion Sort";
 char *SELECTION_SORT = "Selection Sort";
@@ -122,38 +123,38 @@ void initializeItemsWithAscendingValues() {
 
 void initializeItemsWithDescendingValues() {
 	int i = 0;
-	int j=0;
+	int j = 0;
 
 	for (i = 9; i >= 0; i--) {
 		items10Reference[i].key = j;
 		j++;
 	}
 
-	j=0;
+	j = 0;
 	for (i = 99; i >= 0; i--) {
 		items100Reference[i].key = j;
 		j++;
 	}
 
-	j=0;
+	j = 0;
 	for (i = 999; i >= 0; i--) {
 		items1000Reference[i].key = j;
 		j++;
 	}
 
-	j=0;
+	j = 0;
 	for (i = 9999; i >= 0; i--) {
 		items10000Reference[i].key = j;
 		j++;
 	}
 
-	j=0;
+	j = 0;
 	for (i = 99999; i >= 0; i--) {
 		items100000Reference[i].key = j;
 		j++;
 	}
 
-	j=0;
+	j = 0;
 	for (i = 999999; i >= 0; i--) {
 		items1000000Reference[i].key = j;
 		j++;
@@ -291,6 +292,7 @@ void initializeStructs(char *inputType) {
  =========================================================================
  Below you can find the implementation for the following algorithms:
  - Shell Sort
+ - Stooge Sort
  - Insertion Sort
  - Selection Sort
  - Bubble Sort
@@ -298,8 +300,8 @@ void initializeStructs(char *inputType) {
  - Merge Sort
  - Quick Sort
 
-   * parameter: items -> Array of TItem elements
-   * parameter: n -> Length of items
+ * parameter: items -> Array of TItem elements
+ * parameter: n -> Length of items
 
  *SHELL SORT DESCRIPTION:
  This method sorts and array of TItem (ascending way)  using Shell Sort Algorithm
@@ -307,6 +309,14 @@ void initializeStructs(char *inputType) {
  This distance (gap) among the subarray elements starts from floor(n/2)
  and at each iteration we keep reducing the gap dividing its value by 2 while  it's greater than 0
  At last iteration Shell Sort works exactly as the common Insertion Sort Algorithm
+
+*STOOGE SORT DESCRIPTION:
+Step 1 : If value at index 0 is greater than
+         value at last index, swap them.
+Step 2:  Recursively,
+       a) Stooge sort the initial 2/3rd of the array.
+       b) Stooge sort the last 2/3rd of the array.
+       c) Stooge sort the initial 2/3rd again to confirm.
  =========================================================================
  */
 
@@ -333,6 +343,35 @@ void shellSort(TItem *items, int n) {
 			numberOfRecordMovements++;
 		}
 	}
+}
+
+void doStoogeSort(TItem *items, int i, int j) {
+	int t;
+	TItem aux;
+	numberOfKeyComparisons++;
+	if (items[j].key < items[i].key) {
+		aux = items[i];
+		items[i] = items[j];
+		items[j] = aux;
+
+		numberOfRecordMovements += 3;
+	}
+
+	if (j - i > 1) {
+		t = (j - i + 1) / 3;
+		doStoogeSort(items, i, j - t);
+		doStoogeSort(items, i + t, j);
+		doStoogeSort(items, i, j - t);
+	}
+}
+
+void stoogeSort(TItem *items, int n) {
+	startTime = clock();
+
+	numberOfKeyComparisons = 0;
+	numberOfRecordMovements = 0;
+
+	doStoogeSort(items, 0, n - 1);
 }
 
 void insertionSort(TItem *items, int n) {
@@ -515,7 +554,7 @@ void mergeSort(TItem *items, int n) {
 	}
 }
 
-int quickSort_particao(TItem *items, int p, int r) {
+int quickSortPartition(TItem *items, int p, int r) {
 	TItem x, temp;
 	int i, j;
 	x = items[r];
@@ -538,12 +577,12 @@ int quickSort_particao(TItem *items, int p, int r) {
 	return i + 1;
 }
 
-void quickSort_ordena(TItem *items, int p, int r) {
+void doQuickSort(TItem *items, int p, int r) {
 	int q;
 	if (p < r) {
-		q = quickSort_particao(items, p, r);
-		quickSort_ordena(items, p, q - 1);
-		quickSort_ordena(items, q + 1, r);
+		q = quickSortPartition(items, p, r);
+		doQuickSort(items, p, q - 1);
+		doQuickSort(items, q + 1, r);
 	}
 }
 
@@ -552,7 +591,7 @@ void quickSort(TItem *items, int n) {
 	numberOfKeyComparisons = 0;
 	numberOfRecordMovements = 0;
 
-	quickSort_ordena(items, 0, n - 1);
+	doQuickSort(items, 0, n - 1);
 }
 
 /*
@@ -560,7 +599,7 @@ void quickSort(TItem *items, int n) {
  Below you can find some auxiliary methods to execute the previous implemented
  sorting algorithms, for the following conditions
  - N=10, 100, 1000, 10.000, 100.000, 1.000.000
- - INITIALY = RANDOM, SORTED, REVERSED_SORTED, ALMOST_SORTED
+ - INITIALLY = RANDOM, SORTED, REVERSED_SORTED, ALMOST_SORTED
  ============================================================================
  */
 
@@ -578,6 +617,22 @@ void runShellSort(char *inputType) {
 	runShellSortAndStoreResults(items10000, 10000, inputType);
 	runShellSortAndStoreResults(items100000, 100000, inputType);
 	runShellSortAndStoreResults(items1000000, 1000000, inputType);
+}
+
+void runStoogeSortAndStoreResults(TItem *items, int n, char *inputType) {
+	char *algorthmName = STOOGE_SORT;
+	stoogeSort(items, n);
+	printComplexity(algorthmName, n, inputType);
+}
+
+void runStoogeSort(char *inputType) {
+	copyItems();
+	runStoogeSortAndStoreResults(items10, 10, inputType);
+	runStoogeSortAndStoreResults(items100, 100, inputType);
+	runStoogeSortAndStoreResults(items1000, 1000, inputType);
+	runStoogeSortAndStoreResults(items10000, 10000, inputType);
+	runStoogeSortAndStoreResults(items100000, 100000, inputType);
+	runStoogeSortAndStoreResults(items1000000, 1000000, inputType);
 }
 
 void runInsertionSortAndStoreResults(TItem *items, int n, char *inputType) {
@@ -679,7 +734,8 @@ void runMergeSort(char *inputType) {
 void runAll(char *inputType) {
 	initializeStructs(inputType);
 
-	runShellSort(inputType);
+	runStoogeSort(inputType);
+	//runShellSort(inputType);
 	runInsertionSort(inputType);
 	runSelectionSort(inputType);
 	runBubbleSort(inputType);
@@ -695,7 +751,8 @@ int main() {
 
 	fprintf(outputFile, "CLOCKS_PER_SEC=%ld", CLOCKS_PER_SEC);
 
-	fprintf(outputFile, "\nMethod	N	Initial_Condition	C(n)	M(n)	CPU Cycles Used\n");
+	fprintf(outputFile,
+			"\nMethod	N	Initial_Condition	C(n)	M(n)	CPU Cycles Used\n");
 	fflush(outputFile);
 
 	runAll(RANDOM);
