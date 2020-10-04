@@ -310,13 +310,13 @@ void initializeStructs(char *inputType) {
  and at each iteration we keep reducing the gap dividing its value by 2 while  it's greater than 0
  At last iteration Shell Sort works exactly as the common Insertion Sort Algorithm
 
-*STOOGE SORT DESCRIPTION:
-Step 1 : If value at index 0 is greater than
-         value at last index, swap them.
-Step 2:  Recursively,
-       a) Stooge sort the initial 2/3rd of the array.
-       b) Stooge sort the last 2/3rd of the array.
-       c) Stooge sort the initial 2/3rd again to confirm.
+ *STOOGE SORT DESCRIPTION:
+ Step 1 : If value at index 0 is greater than
+ value at last index, swap them.
+ Step 2:  Recursively,
+ a) Stooge sort the initial 2/3rd of the array.
+ b) Stooge sort the last 2/3rd of the array.
+ c) Stooge sort the initial 2/3rd again to confirm.
  =========================================================================
  */
 
@@ -752,7 +752,7 @@ int main() {
 	fprintf(outputFile, "CLOCKS_PER_SEC=%ld", CLOCKS_PER_SEC);
 
 	fprintf(outputFile,
-			"\nMethod	N	Initial_Condition	C(n)	M(n)	CPU Cycles Used\n");
+			"\nMethod\tN\tInitial_Condition\tC(n)\tM(n)\tCPU Cycles Used\n");
 	fflush(outputFile);
 
 	runAll(RANDOM);
